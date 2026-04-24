@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoQuest - Jelajahi Dunia Ecoenzim</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🌱</span>
+                <span class="logo-text">EcoQuest</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">Beranda</a></li>
+                <li><a href="#materi" class="nav-link">Materi</a></li>
+                <li><a href="#game" class="nav-link">Game</a></li>
+                <li><a href="#profil" class="nav-link">Profil Saya</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="section home-section">
+        <div class="container">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">Ubah Sampah Organikmu Jadi Cairan Ajaib!</h1>
+                    <p class="hero-subtitle">Belajar membuat ecoenzim sambil bermain game seru</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" onclick="startLearning()">
+                            <span>🚀</span> Mulai Belajar
+                        </button>
+                        <button class="btn btn-secondary" onclick="goToGame()">
+                            <span>🎮</span> Main Game
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="ecoenzim-bottle">
+                        <div class="bottle-body"></div>
+                        <div class="bubble bubble-1"></div>
+                        <div class="bubble bubble-2"></div>
+                        <div class="bubble bubble-3"></div>
+                        <div class="bubble bubble-4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-number" id="totalUsers">1,234</div>
+                    <div class="stat-label">Pelajar Bergabung</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🧪</div>
+                    <div class="stat-number" id="totalEcoenzim">5,678</div>
+                    <div class="stat-label">Liter Ecoenzim Dibuat</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🌍</div>
+                    <div class="stat-number" id="totalWaste">3,456</div>
+                    <div class="stat-label">Kg Sampah Dikurangi</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Materi Section -->
+    <section id="materi" class="section materi-section">
+        <div class="container">
+            <h2 class="section-title">📚 Materi Pembelajaran</h2>
+            <p class="section-subtitle">Pelajari ecoenzim step by step dengan cara yang menyenangkan</p>
+
+            <div class="learning-path">
+                <div class="module-card" data-module="1">
+                    <div class="module-header">
+                        <div class="module-icon">🌿</div>
+                        <div class="module-badge">Modul 1</div>
+                    </div>
+                    <h3>Apa itu Ecoenzim?</h3>
+                    <p>Kenali cairan ajaib dari sampah organik</p>
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">0% selesai</span>
+                    </div>
+                    <button class="btn-module" onclick="openModule(1)">Mulai Belajar</button>
+                </div>
+
+                <div class="module-card" data-module="2">
+                    <div class="module-header">
+                        <div class="module-icon">✨</div>
+                        <div class="module-badge locked">Modul 2</div>
+                    </div>
+                    <h3>Manfaat Ecoenzim</h3>
+                    <p>Kegunaan luar biasa untuk rumah dan lingkungan</p>
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">Terkunci</span>
+                    </div>
+                    <button class="btn-module locked" disabled>🔒 Selesaikan Modul 1</button>
+                </div>
+
+                <div class="module-card" data-module="3">
+                    <div class="module-header">
+                        <div class="module-icon">🧪</div>
+                        <div class="module-badge locked">Modul 3</div>
+                    </div>
+                    <h3>Cara Membuat Ecoenzim</h3>
+                    <p>Panduan lengkap pembuatan ecoenzim</p>
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">Terkunci</span>
+                    </div>
+                    <button class="btn-module locked" disabled>🔒 Selesaikan Modul 2</button>
+                </div>
+
+                <div class="module-card" data-module="4">
+                    <div class="module-header">
+                        <div class="module-icon">⚗️</div>
+                        <div class="module-badge locked">Modul 4</div>
+                    </div>
+                    <h3>Tips & Troubleshooting</h3>
+                    <p>Atasi masalah dan optimalkan hasilmu</p>
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text">Terkunci</span>
+                    </div>
+                    <button class="btn-module locked" disabled>🔒 Selesaikan Modul 3</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Section -->
+    <section id="game" class="section game-section">
+        <div class="container">
+            <h2 class="section-title">🎮 Game Edukasi</h2>
+            <p class="section-subtitle">Uji pemahamanmu dengan game seru!</p>
+
+            <div class="games-grid">
+                <div class="game-card">
+                    <div class="game-icon">🗑️</div>
+                    <h3>Sortir Sampah</h3>
+                    <p>Pilih sampah organik yang tepat untuk ecoenzim</p>
+                    <div class="game-stats">
+                        <span>⭐ High Score: <strong id="sortScore">0</strong></span>
+                    </div>
+                    <button class="btn btn-game" onclick="startSortGame()">Main Sekarang</button>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-icon">🧪</div>
+                    <h3>Racik Ecoenzim</h3>
+                    <p>Campur bahan dengan rasio yang tepat</p>
+                    <div class="game-stats">
+                        <span>⭐ High Score: <strong id="mixScore">0</strong></span>
+                    </div>
+                    <button class="btn btn-game" onclick="startMixGame()">Main Sekarang</button>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-icon">❓</div>
+                    <h3>Kuis Ecoenzim</h3>
+                    <p>Jawab pertanyaan tentang ecoenzim</p>
+                    <div class="game-stats">
+                        <span>⭐ High Score: <strong id="quizScore">0</strong></span>
+                    </div>
+                    <button class="btn btn-game" onclick="startQuiz()">Main Sekarang</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profil Section -->
+    <section id="profil" class="section profil-section">
+        <div class="container">
+            <h2 class="section-title">👤 Profil Saya</h2>
+            
+            <div class="profile-container">
+                <div class="profile-card">
+                    <div class="profile-avatar">
+                        <div class="avatar-circle">
+                            <span class="avatar-emoji">🌱</span>
+                        </div>
+                        <button class="btn-change-avatar" onclick="changeAvatar()">Ubah Avatar</button>
+                    </div>
+                    <div class="profile-info">
+                        <h3 id="userName">EcoWarrior</h3>
+                        <div class="level-badge">
+                            <span class="level-icon">⚡</span>
+                            <span id="userLevel">Level 1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="streak-card">
+                    <h4>🔥 Streak Harian</h4>
+                    <div class="streak-display">
+                        <div class="streak-number" id="streakNumber">0</div>
+                        <div class="streak-label">Hari Berturut-turut</div>
+                    </div>
+                    <div class="streak-info">
+                        <p>🏆 Streak Terpanjang: <strong id="longestStreak">0</strong> hari</p>
+                    </div>
+                    <div class="streak-status" id="streakStatus">
+                        <p>Belum bermain hari ini</p>
+                    </div>
+                    <button class="btn-streak" id="playTodayBtn" onclick="checkDailyPlay()">
+                        Main Game Hari Ini!
+                    </button>
+                    <div class="streak-calendar">
+                        <p style="font-size: 12px; color: #666; margin-bottom: 10px;">14 Hari Terakhir</p>
+                        <div class="calendar-days" id="streakCalendar"></div>
+                    </div>
+                </div>
+
+                <div class="xp-card">
+                    <h4>Pengalaman (XP)</h4>
+                    <div class="xp-bar">
+                        <div class="xp-fill" id="xpFill" style="width: 0%"></div>
+                    </div>
+                    <p class="xp-text"><span id="currentXP">0</span> / <span id="nextLevelXP">100</span> XP</p>
+                </div>
+
+                <div class="achievements-card">
+                    <h4>🏆 Pencapaian</h4>
+                    <div class="badges-grid">
+                        <div class="badge-item locked">
+                            <div class="badge-icon">🌟</div>
+                            <p>Pemula</p>
+                        </div>
+                        <div class="badge-item locked">
+                            <div class="badge-icon">🔬</div>
+                            <p>Ilmuwan</p>
+                        </div>
+                        <div class="badge-item locked">
+                            <div class="badge-icon">🏅</div>
+                            <p>Ahli Eco</p>
+                        </div>
+                        <div class="badge-item locked">
+                            <div class="badge-icon">👑</div>
+                            <p>Master</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Materi -->
+    <div id="moduleModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModule()">&times;</span>
+            <div id="moduleContent"></div>
+            <div class="modal-navigation">
+                <button class="btn btn-secondary" onclick="prevContent()" id="prevBtn" style="display: none;">⬅️ Sebelumnya</button>
+                <button class="btn btn-primary" onclick="nextContent()" id="nextBtn">Selanjutnya ➡️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Game -->
+    <div id="gameModal" class="modal">
+        <div class="modal-content game-modal">
+            <span class="close-modal" onclick="closeGame()">&times;</span>
+            <div id="gameContent"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
