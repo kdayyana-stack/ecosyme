@@ -34,12 +34,18 @@ function updateModuleProgress() {
             card.querySelector('.progress-fill').style.width = '100%';
             card.querySelector('.progress-text').textContent = '100% selesai';
             card.querySelector('.module-badge').classList.remove('locked');
+            // Buka modul berikutnya
             let nextCard = document.querySelector(`[data-module="${mod+1}"]`);
             if(nextCard) {
-                nextCard.querySelector('.btn-module').disabled = false;
-                nextCard.querySelector('.btn-module').classList.remove('locked');
-                nextCard.querySelector('.btn-module').innerHTML = 'Mulai Belajar';
+                let nextBtn = nextCard.querySelector('.btn-module');
+                nextBtn.disabled = false;
+                nextBtn.classList.remove('locked');
+                nextBtn.innerHTML = 'Mulai Belajar';
+                // Perbaikan: pasang onclick dengan benar
+                nextBtn.setAttribute('onclick', `openModule(${mod+1})`);
                 nextCard.querySelector('.progress-text').textContent = '0% selesai';
+                // Hapus badge locked
+                nextCard.querySelector('.module-badge').classList.remove('locked');
             }
         }
     });
