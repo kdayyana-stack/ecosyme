@@ -2,31 +2,33 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoQuest - Jelajahi Dunia Ecoenzim</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Navigation with Hamburger -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <span class="logo-icon">🌱</span>
-                <span class="logo-text">EcoQuest</span>
-            </div>
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#home" class="nav-link active">Beranda</a></li>
-                <li><a href="#materi" class="nav-link">Materi</a></li>
-                <li><a href="#game" class="nav-link">Game</a></li>
-                <li><a href="#profil" class="nav-link">Profil Saya</a></li>
-            </ul>
+    <!-- Navigation -->
+ <nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <span class="logo-icon">🌱</span>
+            <span class="logo-text">EcoQuest</span>
         </div>
-    </nav>
+        
+        <div class="hamburger" id="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+
+        <ul class="nav-menu" id="nav-menu">
+            <li><a href="#home" class="nav-link active">Beranda</a></li>
+            <li><a href="#materi" class="nav-link">Materi</a></li>
+            <li><a href="#game" class="nav-link">Game</a></li>
+            <li><a href="#profil" class="nav-link">Profil Saya</a></li>
+        </ul>
+    </div>
+</nav>
 
     <!-- Home Section -->
     <section id="home" class="section home-section">
@@ -76,79 +78,51 @@
     </section>
 
     <!-- Materi Section -->
-    <section id="materi" class="section materi-section">
-        <div class="container">
-            <h2 class="section-title">📚 Materi Pembelajaran</h2>
-            <p class="section-subtitle">Pelajari ecoenzim step by step dengan cara yang menyenangkan</p>
-
-            <div class="learning-path">
-                <div class="module-card" data-module="1">
-                    <div class="module-header">
-                        <div class="module-icon">🌿</div>
-                        <div class="module-badge">Modul 1</div>
-                    </div>
-                    <h3>Apa itu Ecoenzim?</h3>
-                    <p>Kenali cairan ajaib dari sampah organik</p>
-                    <div class="module-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%"></div>
-                        </div>
-                        <span class="progress-text">0% selesai</span>
-                    </div>
-                    <button class="btn-module" onclick="openModule(1)">Mulai Belajar</button>
-                </div>
-
-                <div class="module-card" data-module="2">
-                    <div class="module-header">
-                        <div class="module-icon">✨</div>
-                        <div class="module-badge locked">Modul 2</div>
-                    </div>
-                    <h3>Manfaat Ecoenzim</h3>
-                    <p>Kegunaan luar biasa untuk rumah dan lingkungan</p>
-                    <div class="module-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%"></div>
-                        </div>
-                        <span class="progress-text">Terkunci</span>
-                    </div>
-                    <button class="btn-module locked" disabled>🔒 Selesaikan Modul 1</button>
-                </div>
-
-                <div class="module-card" data-module="3">
-                    <div class="module-header">
-                        <div class="module-icon">🧪</div>
-                        <div class="module-badge locked">Modul 3</div>
-                    </div>
-                    <h3>Cara Membuat Ecoenzim</h3>
-                    <p>Panduan lengkap pembuatan ecoenzim</p>
-                    <div class="module-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%"></div>
-                        </div>
-                        <span class="progress-text">Terkunci</span>
-                    </div>
-                    <button class="btn-module locked" disabled>🔒 Selesaikan Modul 2</button>
-                </div>
-
-                <div class="module-card" data-module="4">
-                    <div class="module-header">
-                        <div class="module-icon">⚗️</div>
-                        <div class="module-badge locked">Modul 4</div>
-                    </div>
-                    <h3>Tips & Troubleshooting</h3>
-                    <p>Atasi masalah dan optimalkan hasilmu</p>
-                    <div class="module-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%"></div>
-                        </div>
-                        <span class="progress-text">Terkunci</span>
-                    </div>
-                    <button class="btn-module locked" disabled>🔒 Selesaikan Modul 3</button>
-                </div>
-            </div>
+    <div class="module-grid">
+    <div class="module-card" data-module="1">
+        <div class="module-icon">🌱</div>
+        <h3>Modul 1: Pengenalan</h3>
+        <p>Mengenal apa itu Ecoenzim dan sejarahnya.</p>
+        <div class="module-progress">
+            <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+            <span class="progress-text">0% selesai</span>
         </div>
-    </section>
+        <button class="btn-module btn-primary" onclick="openModule(1)">Mulai Belajar</button>
+    </div>
 
+    <div class="module-card" data-module="2">
+        <div class="module-icon">✨</div>
+        <h3>Modul 2: Manfaat</h3>
+        <p>Kegunaan ecoenzim untuk rumah dan alam.</p>
+        <div class="module-progress">
+            <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+            <span class="progress-text">Terkunci</span>
+        </div>
+        <button class="btn-module locked" disabled onclick="openModule(2)">🔒 Selesaikan Modul 1</button>
+    </div>
+
+    <div class="module-card" data-module="3">
+        <div class="module-icon">🧪</div>
+        <h3>Modul 3: Pembuatan</h3>
+        <p>Rumus 3:1:10 dan langkah praktis membuatnya.</p>
+        <div class="module-progress">
+            <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+            <span class="progress-text">Terkunci</span>
+        </div>
+        <button class="btn-module locked" disabled onclick="openModule(3)">🔒 Selesaikan Modul 2</button>
+    </div>
+
+    <div class="module-card" data-module="4">
+        <div class="module-icon">💡</div>
+        <h3>Modul 4: Tips & Solusi</h3>
+        <p>Cara merawat dan mengatasi gagal fermentasi.</p>
+        <div class="module-progress">
+            <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+            <span class="progress-text">Terkunci</span>
+        </div>
+        <button class="btn-module locked" disabled onclick="openModule(4)">🔒 Selesaikan Modul 3</button>
+    </div>
+</div>
     <!-- Game Section -->
     <section id="game" class="section game-section">
         <div class="container">
