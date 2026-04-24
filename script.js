@@ -1,203 +1,261 @@
-// Data Management
+// Data User & Progres
 let userData = {
     name: "EcoWarrior",
     level: 1,
     xp: 0,
-    avatar: "🌱",
     completedModules: [],
-    gameScores: { sort: 0, mix: 0, quiz: 0 },
-    badges: [],
-    streak: { current: 0, longest: 0, lastPlayDate: null, playedToday: false, history: [] }
+    streak: { current: 0, playedToday: false }
 };
 
-function loadUserData() {
+// DATA MATERI LENGKAP & MENDALAM (MODUL 1 - 4)
+const moduleData = {
+    1: {
+        title: "Pengenalan & Sejarah Ecoenzim",
+        pages: [
+            { 
+                content: `
+                <h3>Apa itu Ecoenzim?</h3>
+                <p>Ecoenzim adalah cairan multifungsi yang dihasilkan melalui proses fermentasi dari campuran <strong>sisa sampah organik</strong> (seperti kulit buah dan potongan sayur), <strong>gula</strong> (gula merah/molase), dan <strong>air</strong>.</p>
+                <div class='info-box'>
+                    <strong>💡 Sejarah Penemuan:</strong>
+                    <p>Cairan ajaib ini pertama kali diformulasikan oleh <strong>Dr. Rosukon Poompanvong</strong> dari Thailand, pendiri Asosiasi Pertanian Organik Thailand. Beliau mendedikasikan lebih dari 30 tahun penelitiannya untuk mengembangkan ecoenzim dan membagikan resep ini secara gratis demi menyelamatkan bumi. Resep ini kemudian dipopulerkan secara global oleh Dr. Joean Oon dari Malaysia.</p>
+                </div>`
+            },
+            { 
+                content: `
+                <h3>Mengapa Kita Harus Membuatnya?</h3>
+                <p>Setiap hari, sisa makanan dan dapur menyumbang lebih dari 50% total sampah di Tempat Pembuangan Akhir (TPA). Saat sampah organik membusuk di TPA yang kedap udara (anaerob), mereka menghasilkan <strong>Gas Metana</strong>, salah satu gas rumah kaca yang 21 kali lebih berbahaya daripada CO2 dalam memicu pemanasan global.</p>
+                <p>Dengan membuat ecoenzim, kita mencegah sampah ini masuk ke TPA dan mengubahnya menjadi cairan pembersih yang bebas dari bahan kimia sintetis yang merusak ekosistem air.</p>`
+            }
+        ],
+        quiz: { question: "Gas berbahaya apa yang dihasilkan oleh tumpukan sampah organik di TPA?", options: ["Oksigen", "Metana", "Nitrogen", "Helium"], answer: 1 }
+    },
+    2: {
+        title: "Segudang Manfaat Ecoenzim",
+        pages: [
+            { 
+                content: `
+                <h3>Pembersih Rumah Tangga (Bebas Kimia)</h3>
+                <p>Ecoenzim memiliki sifat antibakteri dan antijamur. Berikut adalah takaran penggunaannya:</p>
+                <ul>
+                    <li><strong>Mengepel Lantai (1:1000):</strong> 1 tutup botol ecoenzim dicampur 1 ember air. Lantai bersih dan serangga pergi.</li>
+                    <li><strong>Mencuci Piring/Baju (1:1:5):</strong> 1 bagian ecoenzim : 1 bagian sabun cuci : 5 bagian air. Membantu mengurangi penggunaan sabun kimia.</li>
+                    <li><strong>Pembersih Kaca (1:10):</strong> 1 bagian ecoenzim dan 10 bagian air ke dalam botol spray.</li>
+                    <li><strong>Pembersih Kloset/Saluran Air:</strong> Tuang murni (tanpa air) untuk membunuh kuman dan melancarkan saluran mampet.</li>
+                </ul>`
+            },
+            { 
+                content: `
+                <h3>Manfaat untuk Pertanian & Lingkungan</h3>
+                <p>Tidak hanya untuk rumah, ecoenzim adalah sahabat alam:</p>
+                <ul>
+                    <li><strong>Pupuk Tanaman (1:1000):</strong> Campurkan 1 ml ecoenzim dengan 1 Liter air. Siramkan ke tanah atau semprot ke daun untuk merangsang pertumbuhan.</li>
+                    <li><strong>Pestisida Alami (1:500):</strong> Semprotkan ke area tanaman yang terkena hama atau kutu daun secara rutin.</li>
+                    <li><strong>Penjernih Air:</strong> Jika dituang ke selokan atau sungai yang tercemar, enzim ini akan memecah zat kimia berbahaya dan memulihkan ekosistem air (1 liter ecoenzim bisa memurnikan hingga 1000 liter air sungai).</li>
+                </ul>`
+            }
+        ],
+        quiz: { question: "Berapa rasio campuran Ecoenzim : Sabun : Air untuk mencuci piring?", options: ["1:1:1", "1:10:100", "1:1:5", "3:1:10"], answer: 2 }
+    },
+    3: {
+        title: "Panduan Membuat Ecoenzim",
+        pages: [
+            { 
+                content: `
+                <h3>Persiapan Bahan & Wadah</h3>
+                <p><strong>1. Wadah:</strong> Gunakan wadah <strong>PLASTIK</strong> bermulut lebar (seperti toples/ember). <em>Jangan gunakan kaca</em> karena gas fermentasi bisa membuatnya pecah/meledak.</p>
+                <p><strong>2. Bahan Organik:</strong> Gunakan sisa buah (kulit jeruk, nanas, apel, mangga) dan sisa sayur segar. <em>DILARANG</em> menggunakan sisa daging, tulang, sisa makanan berminyak, atau sampah yang sudah berjamur/busuk.</p>
+                <p><strong>3. Gula:</strong> Gunakan gula merah tebu, gula aren, atau molase. <em>Jangan</em> gunakan gula putih (gula pasir) karena kandungan zat kimianya bisa mengganggu bakteri baik.</p>`
+            },
+            { 
+                content: `
+                <h3>Rumus Baku 3:1:10</h3>
+                <div class='formula-card' style='background: #e8f5e9; padding: 10px; border-radius: 8px;'>
+                    <p>Contoh perhitungan untuk wadah 10 Liter:</p>
+                    <ul>
+                        <li><strong>Air (10 bagian) = 6 Liter</strong> (Maksimal 60% dari wadah)</li>
+                        <li><strong>Sampah Organik (3 bagian) = 1,8 Kg</strong> (30% dari wadah)</li>
+                        <li><strong>Gula Merah (1 bagian) = 600 gram</strong> (10% dari wadah)</li>
+                        <li>Sisa ruang 20% di wadah wajib dibiarkan kosong untuk menampung gas.</li>
+                    </ul>
+                </div>`
+            },
+            {
+                content: `
+                <h3>Langkah-langkah & Perawatan</h3>
+                <ol>
+                    <li>Larutkan gula dan air di dalam wadah plastik.</li>
+                    <li>Masukkan potongan sampah organik. Pastikan semua sampah terendam air (bisa ditekan/diberi pemberat).</li>
+                    <li>Tutup rapat wadah dan beri label tanggal pembuatan (Panen = 3 bulan kemudian).</li>
+                    <li><strong>Perawatan Penting:</strong> Selama 1 bulan pertama, buka tutup wadah <em>setiap hari selama 1 detik</em> untuk membuang gas, lalu tutup rapat kembali. Bulan ke-2 dan ke-3 tidak perlu dibuka lagi.</li>
+                </ol>`
+            }
+        ],
+        quiz: { question: "Mengapa kita TIDAK BOLEH menggunakan wadah kaca untuk membuat ecoenzim?", options: ["Bakterinya mati", "Gas fermentasi bisa membuat kaca meledak", "Warnanya tidak terlihat", "Ecoenzim akan membeku"], answer: 1 }
+    },
+    4: {
+        title: "Panen, Tips & Troubleshooting",
+        pages: [
+            { 
+                content: `
+                <h3>Kriteria Panen & Ciri Keberhasilan</h3>
+                <p>Setelah 3 bulan, ecoenzim siap dipanen! Berikut cirinya:</p>
+                <ul>
+                    <li><strong>Aroma:</strong> Asam manis yang segar, mirip cuka atau tape (karena perpaduan buah dan fermentasi).</li>
+                    <li><strong>pH (Tingkat Keasaman):</strong> Jika diukur dengan kertas lakmus, pH berada di bawah 4.0.</li>
+                    <li><strong>Jamur Pitera (Mama Enzyme):</strong> Sering muncul lapisan jamur putih menyatu di permukaan cairan. Ini sangat bagus dan bisa digunakan untuk masker wajah alami!</li>
+                </ul>`
+            },
+            { 
+                content: `
+                <h3>Troubleshooting (Mengatasi Masalah)</h3>
+                <p>Jangan panik jika terjadi masalah, ecoenzim bisa diselamatkan:</p>
+                <ul>
+                    <li><strong>Berbau Busuk (Got) / Berjamur Hitam:</strong> Artinya fermentasi terkontaminasi atau kurang gula. <strong>Solusi:</strong> Tambahkan gula sebanyak takaran awal, aduk rata, dan tutup rapat kembali selama 1 bulan.</li>
+                    <li><strong>Muncul Belatung/Lalat:</strong> Artinya tutup wadah kurang rapat sehingga lalat bertelur di dalam. <strong>Solusi:</strong> Tambahkan gula setara takaran awal, aduk rata, dan pastikan tutup dilapisi plastik agar benar-benar kedap udara.</li>
+                </ul>`
+            },
+            {
+                content: `
+                <h3>Bagaimana dengan Ampasnya?</h3>
+                <p>Setelah cairan ecoenzim disaring, jangan buang ampas sisa buah/sayurnya! Ampas ini masih sangat berguna:</p>
+                <ol>
+                    <li>Blender ampas dan tuangkan ke kloset (diamkan semalaman sebelum disiram) untuk membersihkan septic tank.</li>
+                    <li>Jemur ampas hingga kering, lalu blender menjadi bubuk untuk dicampur ke tanah sebagai pupuk padat.</li>
+                    <li>Gunakan sebagian ampas (maksimal 10%) sebagai "starter" untuk pembuatan batch ecoenzim berikutnya agar fermentasi lebih cepat.</li>
+                </ol>`
+            }
+        ],
+        quiz: { question: "Berapa tingkat pH (keasaman) ecoenzim yang menandakan keberhasilan fermentasi?", options: ["Di atas 7", "Tepat di angka 7", "Di bawah 4", "Di atas 10"], answer: 2 }
+    }
+};
+
+let currentModule = 0;
+let currentPage = 0;
+
+// FUNGSI MEMBUKA MODUL
+function openModule(moduleNum) {
+    currentModule = moduleNum;
+    currentPage = 0;
+    const modal = document.getElementById('moduleModal');
+    modal.style.display = 'block';
+    renderContent();
+}
+
+function renderContent() {
+    const contentDiv = document.getElementById('moduleContent');
+    const pages = moduleData[currentModule].pages;
+    
+    if (currentPage < pages.length) {
+        contentDiv.innerHTML = `<h2>${moduleData[currentModule].title}</h2>` + pages[currentPage].content;
+        document.getElementById('nextBtn').textContent = "Selanjutnya ➡️";
+    } else {
+        renderQuiz();
+    }
+    
+    document.getElementById('prevBtn').style.display = currentPage === 0 ? 'none' : 'block';
+}
+
+function nextContent() {
+    if (currentPage <= moduleData[currentModule].pages.length) {
+        currentPage++;
+        if (currentPage > moduleData[currentModule].pages.length) {
+            // Cek jawaban kuis
+            const selected = document.querySelector('input[name="quiz"]:checked');
+            if (selected && parseInt(selected.value) === moduleData[currentModule].quiz.answer) {
+                alert("🎉 Jawaban Benar! Modul Selesai.");
+                completeModule(currentModule);
+                closeModule();
+            } else {
+                alert("❌ Jawaban salah. Silakan coba lagi!");
+                currentPage = moduleData[currentModule].pages.length; // Kembali ke kuis
+                renderQuiz();
+            }
+        } else {
+            renderContent();
+        }
+    }
+}
+
+function renderQuiz() {
+    const quiz = moduleData[currentModule].quiz;
+    let html = `<h2>Kuis Modul ${currentModule}</h2><p><strong>${quiz.question}</strong></p><br>`;
+    quiz.options.forEach((opt, i) => {
+        html += `<label class="quiz-option" style="display:block; margin: 10px 0; cursor: pointer; padding: 10px; background: #f9f9f9; border-radius: 5px;">
+                    <input type="radio" name="quiz" value="${i}"> ${opt}
+                 </label>`;
+    });
+    document.getElementById('moduleContent').innerHTML = html;
+    document.getElementById('nextBtn').textContent = "Kirim Jawaban ✅";
+    document.getElementById('prevBtn').style.display = 'block';
+}
+
+// LOGIKA UNLOCK MODUL
+function completeModule(num) {
+    if (!userData.completedModules.includes(num)) {
+        userData.completedModules.push(num);
+        
+        // Update UI modul yang baru diselesaikan
+        const currentCard = document.querySelector(`[data-module="${num}"]`);
+        if (currentCard) {
+            currentCard.querySelector('.progress-fill').style.width = '100%';
+            currentCard.querySelector('.progress-text').textContent = '100% Selesai';
+        }
+        
+        // Unlock Modul Berikutnya
+        const nextNum = num + 1;
+        const nextCard = document.querySelector(`[data-module="${nextNum}"]`);
+        if (nextCard) {
+            const btn = nextCard.querySelector('.btn-module');
+            btn.disabled = false;
+            btn.classList.remove('locked');
+            btn.innerHTML = 'Mulai Belajar';
+            btn.setAttribute('onclick', `openModule(${nextNum})`);
+            nextCard.querySelector('.progress-text').textContent = '0% selesai';
+        }
+        saveData();
+    }
+}
+
+function closeModule() {
+    document.getElementById('moduleModal').style.display = 'none';
+}
+
+function prevContent() {
+    if (currentPage > 0) {
+        currentPage--;
+        renderContent();
+    }
+}
+
+function saveData() {
+    localStorage.setItem('ecoQuestData', JSON.stringify(userData));
+}
+
+// Load data saat pertama buka
+window.onload = () => {
     const saved = localStorage.getItem('ecoQuestData');
     if (saved) {
         userData = JSON.parse(saved);
-        updateUI();
+        userData.completedModules.forEach(m => completeModule(m));
     }
-}
-function saveUserData() { localStorage.setItem('ecoQuestData', JSON.stringify(userData)); }
-
-function updateUI() {
-    document.getElementById('userName').textContent = userData.name;
-    document.getElementById('userLevel').textContent = `Level ${userData.level}`;
-    const xpNeeded = userData.level * 100;
-    const xpProgress = (userData.xp / xpNeeded) * 100;
-    document.getElementById('xpFill').style.width = xpProgress + '%';
-    document.getElementById('currentXP').textContent = userData.xp;
-    document.getElementById('nextLevelXP').textContent = xpNeeded;
-    document.querySelector('.avatar-emoji').textContent = userData.avatar;
-    document.getElementById('sortScore').textContent = userData.gameScores.sort;
-    document.getElementById('mixScore').textContent = userData.gameScores.mix;
-    document.getElementById('quizScore').textContent = userData.gameScores.quiz;
-    updateModuleProgress();
-    updateBadges();
-    updateStreakUI();
-}
-
-function updateModuleProgress() {
-    userData.completedModules.forEach(moduleNum => {
-        const card = document.querySelector(`[data-module="${moduleNum}"]`);
-        if (card) {
-            card.querySelector('.progress-fill').style.width = '100%';
-            card.querySelector('.progress-text').textContent = '100% selesai';
-            card.querySelector('.module-badge').classList.remove('locked');
-            const nextCard = document.querySelector(`[data-module="${moduleNum + 1}"]`);
-            if (nextCard) {
-                nextCard.querySelector('.btn-module').disabled = false;
-                nextCard.querySelector('.btn-module').classList.remove('locked');
-                nextCard.querySelector('.btn-module').innerHTML = 'Mulai Belajar';
-                nextCard.querySelector('.progress-text').textContent = '0% selesai';
-            }
-        }
-    });
-}
-
-function addXP(amount) {
-    userData.xp += amount;
-    let xpNeeded = userData.level * 100;
-    if (userData.xp >= xpNeeded) {
-        userData.level++;
-        userData.xp -= xpNeeded;
-        showNotification(`🎉 Naik Level! Sekarang Level ${userData.level}!`);
-        checkBadges();
-    }
-    saveUserData();
-    updateUI();
-}
-
-function checkBadges() {
-    if (userData.level >= 2 && !userData.badges.includes('pemula')) { userData.badges.push('pemula'); unlockBadge(0, 'Pemula'); }
-    if (userData.level >= 5 && !userData.badges.includes('ilmuwan')) { userData.badges.push('ilmuwan'); unlockBadge(1, 'Ilmuwan'); }
-    if (userData.level >= 10 && !userData.badges.includes('ahli')) { userData.badges.push('ahli'); unlockBadge(2, 'Ahli Eco'); }
-    if (userData.level >= 20 && !userData.badges.includes('master')) { userData.badges.push('master'); unlockBadge(3, 'Master'); }
-}
-function unlockBadge(index, name) {
-    const badges = document.querySelectorAll('.badge-item');
-    badges[index].classList.remove('locked');
-    showNotification(`🏆 Badge Baru: ${name}!`);
-}
-function updateBadges() {
-    const badgeNames = ['pemula', 'ilmuwan', 'ahli', 'master'];
-    document.querySelectorAll('.badge-item').forEach((badge, i) => {
-        if (userData.badges.includes(badgeNames[i])) badge.classList.remove('locked');
-    });
-}
-
-function startLearning() { document.getElementById('materi').scrollIntoView({ behavior: 'smooth' }); }
-function goToGame() { document.getElementById('game').scrollIntoView({ behavior: 'smooth' }); }
-
-// ======================= MODULE CONTENTS (Modul 1-4 lengkap) =======================
-const moduleContents = {
-    1: [
-        { title: "Apa itu Ecoenzim?", content: `<div class="module-content"><h2>🌿 Mengenal Ecoenzim</h2><p>Ecoenzim adalah cairan hasil fermentasi sampah organik (kulit buah, sayur) dengan gula merah dan air.</p><div style="background:#e8f5e9; padding:20px; border-radius:15px;"><h3>💡 Tahukah Kamu?</h3><p>Setiap hari, rata-rata rumah tangga menghasilkan 0.5-1 kg sampah organik.</p></div><h3>Sejarah Singkat</h3><p>Dikembangkan oleh Dr. Rosukon Poompanvong dari Thailand.</p><div style="text-align:center; margin:30px 0;"><div style="font-size:120px;">🧪</div><p>Sampah Organik + Gula + Air = Cairan Ajaib!</p></div></div>` },
-        { title: "Proses Fermentasi", content: `<div class="module-content"><h2>⏰ Proses Fermentasi</h2><p>Waktu 3 bulan.</p><ul><li>Minggu 1-2: Buka tutup setiap hari</li><li>Bulan 1: Warna kecoklatan</li><li>Bulan 2: Aroma asam manis</li><li>Bulan 3: Siap panen 🎉</li></ul><div style="background:#e3f2fd; padding:20px; border-radius:15px;"><h3>⚠️ Tips</h3><p>Simpan di tempat sejuk, jangan kena sinar matahari langsung.</p></div></div>` },
-        { title: "Kuis Modul 1", content: `<div class="module-content"><h2>📝 Kuis</h2><div id="quizModule1"><h3>Berapa lama waktu fermentasi ecoenzim?</h3><div style="display:grid; gap:10px;"><button class="quiz-option" onclick="checkAnswer(1, 'wrong')">1 minggu</button><button class="quiz-option" onclick="checkAnswer(1, 'wrong')">1 bulan</button><button class="quiz-option" onclick="checkAnswer(1, 'correct')">3 bulan</button><button class="quiz-option" onclick="checkAnswer(1, 'wrong')">6 bulan</button></div></div><div id="quizResult1" style="display:none;"></div></div>` }
-    ],
-    2: [
-        { title: "Manfaat untuk Rumah", content: `<div class="module-content"><h2>🏠 Manfaat Ecoenzim di Rumah</h2><div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px;"><div style="background:#e8f5e9; padding:20px; border-radius:15px;"><div style="font-size:48px;">🧼</div><h3>Pembersih Serbaguna</h3><p>1:10 dengan air untuk lantai, kaca</p></div><div style="background:#fff3e0; padding:20px; border-radius:15px;"><div style="font-size:48px;">🚽</div><h3>Pembersih Toilet</h3><p>Membunuh bakteri & menghilangkan bau</p></div><div style="background:#e3f2fd; padding:20px; border-radius:15px;"><div style="font-size:48px;">👕</div><h3>Pelembut Pakaian</h3><p>Alami & wangi</p></div></div><div style="background:#f3e5f5; padding:20px; border-radius:15px;"><h3>💰 Hemat Biaya</h3><p>Estimasi penghematan Rp100-200 ribu per bulan!</p></div></div>` },
-        { title: "Manfaat Lingkungan", content: `<div class="module-content"><h2>🌍 Untuk Lingkungan</h2><ul><li>♻️ Mengurangi sampah organik ke TPA</li><li>💧 Membersihkan air dari bahan kimia</li><li>🌿 Pupuk tanaman (1:500)</li><li>🐛 Mengusir hama secara alami</li></ul><div style="text-align:center; margin-top:30px;"><h3>Dampak 1000 keluarga</h3><p>3 Ton sampah berkurang, 1000 L ecoenzim</p></div></div>` },
-        { title: "Kuis Modul 2", content: `<div class="module-content"><h2>📝 Kuis</h2><div id="quizModule2"><h3>Berapa perbandingan ecoenzim dengan air untuk membersihkan lantai?</h3><div style="display:grid; gap:10px;"><button class="quiz-option" onclick="checkAnswer(2, 'wrong')">1:1</button><button class="quiz-option" onclick="checkAnswer(2, 'wrong')">1:5</button><button class="quiz-option" onclick="checkAnswer(2, 'correct')">1:10</button><button class="quiz-option" onclick="checkAnswer(2, 'wrong')">1:20</button></div></div><div id="quizResult2" style="display:none;"></div></div>` }
-    ],
-    3: [
-        { title: "Bahan & Alat", content: `<div class="module-content"><h2>📋 Bahan dan Alat</h2><div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;"><div style="background:#e8f5e9; padding:20px;"><h3>🥗 Bahan</h3><ul><li>Sampah organik (3 bagian)</li><li>Gula merah (1 bagian)</li><li>Air (10 bagian)</li></ul></div><div style="background:#fff3e0; padding:20px;"><h3>🔧 Alat</h3><ul><li>Wadah plastik/kaca bertutup</li><li>Pisau, talenan</li><li>Corong & saringan</li></ul></div></div><p><strong>Contoh 1 liter:</strong> 300g sampah, 100g gula, 1000ml air.</p></div>` },
-        { title: "Langkah Membuat", content: `<div class="module-content"><h2>👨‍🍳 Langkah-langkah</h2><ol><li>Siapkan wadah bersih</li><li>Potong kecil sampah organik</li><li>Larutkan gula dalam air</li><li>Campur semua bahan, pastikan terendam</li><li>Tutup rapat, beri label tanggal</li><li>Buka tutup setiap hari di minggu pertama, fermentasi 3 bulan</li></ol><div style="background:#fffde7; padding:15px; border-radius:15px;"><h3>⚠️ Hindari</h3><p>Jangan gunakan sampah busuk, jangan isi penuh, jangan lupa buka tutup.</p></div></div>` },
-        { title: "Kuis Modul 3", content: `<div class="module-content"><h2>📝 Kuis</h2><div id="quizModule3"><h3>Apa rasio yang benar untuk membuat ecoenzim?</h3><div style="display:grid; gap:10px;"><button class="quiz-option" onclick="checkAnswer(3, 'wrong')">1:1:1</button><button class="quiz-option" onclick="checkAnswer(3, 'correct')">3:1:10</button><button class="quiz-option" onclick="checkAnswer(3, 'wrong')">2:1:5</button><button class="quiz-option" onclick="checkAnswer(3, 'wrong')">5:2:10</button></div></div><div id="quizResult3" style="display:none;"></div></div>` }
-    ],
-    4: [
-        { title: "Ciri Berhasil", content: `<div class="module-content"><h2>✅ Ciri Ecoenzim Berhasil</h2><ul><li>Aroma asam manis (tidak busuk)</li><li>Warna coklat kekuningan</li><li>Cairan jernih dengan sedikit ampas</li><li>pH 3-4 (asam)</li></ul><div style="background:#fff3e0; padding:15px;"><h3>🔍 Lapisan Putih?</h3><p>Normal, aduk perlahan.</p></div></div>` },
-        { title: "Troubleshooting", content: `<div class="module-content"><h2>🔧 Mengatasi Masalah</h2><div style="background:#ffebee; padding:15px; margin-bottom:15px;"><h3>😷 Bau Busuk</h3><p>Solusi: tambah gula, buka tutup lebih sering.</p></div><div style="background:#fff9c4; padding:15px; margin-bottom:15px;"><h3>🐛 Belatung</h3><p>Solusi: saring segera, wadah lebih rapat.</p></div><div style="background:#e1f5fe; padding:15px;"><h3>💥 Wadah menggelembung</h3><p>Buka tutup perlahan untuk keluarkan gas.</p></div></div>` },
-        { title: "Kuis Modul 4", content: `<div class="module-content"><h2>📝 Kuis Akhir</h2><div id="quizModule4"><h3>Apa yang harus dilakukan jika ecoenzim berbau busuk?</h3><div style="display:grid; gap:10px;"><button class="quiz-option" onclick="checkAnswer(4, 'wrong')">Tambahkan air</button><button class="quiz-option" onclick="checkAnswer(4, 'correct')">Tambahkan gula & buka tutup lebih sering</button><button class="quiz-option" onclick="checkAnswer(4, 'wrong')">Tutup rapat</button><button class="quiz-option" onclick="checkAnswer(4, 'wrong')">Panaskan wadah</button></div></div><div id="quizResult4" style="display:none;"></div></div>` }
-    ]
 };
 
-let currentModule = 1, currentContent = 0;
-function openModule(moduleNum) {
-    if (!userData.completedModules.includes(moduleNum-1) && moduleNum !== 1 && !userData.completedModules.includes(moduleNum-1)) {
-        if(moduleNum > 1 && !userData.completedModules.includes(moduleNum-1)) { showNotification("Selesaikan modul sebelumnya dulu!"); return; }
-    }
-    currentModule = moduleNum;
-    currentContent = 0;
-    if(moduleContents[moduleNum]) {
-        document.getElementById('moduleContent').innerHTML = moduleContents[moduleNum][currentContent].content;
-        document.getElementById('moduleModal').style.display = 'block';
-        updateNavigationButtons();
-    }
-}
-function closeModule() { document.getElementById('moduleModal').style.display = 'none'; }
-function nextContent() {
-    if(currentContent < moduleContents[currentModule].length - 1) {
-        currentContent++;
-        document.getElementById('moduleContent').innerHTML = moduleContents[currentModule][currentContent].content;
-        updateNavigationButtons();
-    } else completeModule(currentModule);
-}
-function prevContent() { if(currentContent > 0) { currentContent--; document.getElementById('moduleContent').innerHTML = moduleContents[currentModule][currentContent].content; updateNavigationButtons(); } }
-function updateNavigationButtons() {
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    prevBtn.style.display = currentContent > 0 ? 'block' : 'none';
-    if(currentContent === moduleContents[currentModule].length-1) nextBtn.textContent = 'Selesai ✓';
-    else nextBtn.textContent = 'Selanjutnya ➡️';
-}
-function checkAnswer(moduleNum, result) {
-    const resultDiv = document.getElementById(`quizResult${moduleNum}`);
-    const quizDiv = document.getElementById(`quizModule${moduleNum}`);
-    if(quizDiv) quizDiv.style.display = 'none';
-    resultDiv.style.display = 'block';
-    if(result === 'correct') {
-        resultDiv.innerHTML = `<div style="background:#e8f5e9; padding:30px; border-radius:15px; text-align:center;"><div style="font-size:64px;">🎉</div><h3>Benar!</h3><button class="btn btn-primary" onclick="nextContent()">Lanjutkan</button></div>`;
-        addXP(50);
-    } else {
-        resultDiv.innerHTML = `<div style="background:#ffebee; padding:30px; border-radius:15px; text-align:center;"><div style="font-size:64px;">😔</div><h3>Kurang tepat</h3><button class="btn btn-secondary" onclick="retryQuiz(${moduleNum})">Coba Lagi</button></div>`;
-    }
-}
-function retryQuiz(moduleNum) {
-    const resultDiv = document.getElementById(`quizResult${moduleNum}`);
-    const quizDiv = document.getElementById(`quizModule${moduleNum}`);
-    resultDiv.style.display = 'none';
-    quizDiv.style.display = 'block';
-}
-function completeModule(moduleNum) {
-    if(!userData.completedModules.includes(moduleNum)) {
-        userData.completedModules.push(moduleNum);
-        addXP(100);
-        showNotification(`🎊 Modul ${moduleNum} Selesai! +100 XP`);
-        saveUserData();
-        updateUI();
-    }
-    closeModule();
-}
+// --- LOGIKA HAMBURGER MENU ---
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('nav-menu');
+const navLinks = document.querySelectorAll('.nav-link');
 
-// Games & Streak functions (unchanged logic, but included)
-function startSortGame() { /* ... full implementation ... */ }
-function startMixGame() { /* ... full implementation ... */ }
-function startQuiz() { /* ... full implementation ... */ }
-function closeGame() { document.getElementById('gameModal').style.display = 'none'; updateUI(); }
-function changeAvatar() { const avatars = ["🌱","🌿","🍀","🌾","🌳","🌲","🌴","🌵","🌸","🌺","🌻","🌼"]; let idx = avatars.indexOf(userData.avatar)+1; if(idx>=avatars.length) idx=0; userData.avatar = avatars[idx]; saveUserData(); updateUI(); }
-function showNotification(msg) { /* ... simple toast ... */ const d=document.createElement('div'); d.style.cssText="position:fixed;top:100px;right:30px;background:#43a047;color:white;padding:15px 25px;border-radius:15px;z-index:10000"; d.innerText=msg; document.body.appendChild(d); setTimeout(()=>d.remove(),3000); }
-// Streak system
-function updateStreakUI() { checkStreak(); document.getElementById('streakNumber').textContent=userData.streak.current; document.getElementById('longestStreak').textContent=userData.streak.longest; const statusDiv=document.getElementById('streakStatus'); const btn=document.getElementById('playTodayBtn'); if(userData.streak.playedToday){statusDiv.innerHTML='<p>✅ Sudah bermain hari ini!</p>'; btn.disabled=true; btn.textContent='✓ Streak Hari Ini Selesai';} else { statusDiv.innerHTML='<p>⚡ Main sekarang untuk streak!</p>'; btn.disabled=false; btn.textContent='🔥 Main Game Hari Ini!'; } updateStreakCalendar(); }
-function checkStreak() { const today=new Date(); today.setHours(0,0,0,0); const todayStr=today.toISOString().split('T')[0]; const lastPlay=userData.streak.lastPlayDate?new Date(userData.streak.lastPlayDate):null; if(lastPlay){ lastPlay.setHours(0,0,0,0); const diffDays=Math.floor((today-lastPlay)/(1000*60*60*24)); const lastPlayStr=new Date(userData.streak.lastPlayDate).toISOString().split('T')[0]; userData.streak.playedToday=(lastPlayStr===todayStr); if(diffDays>1 && !userData.streak.playedToday) userData.streak.current=0; } }
-function recordDailyPlay() { if(userData.streak.playedToday) return false; const today=new Date(); const todayStr=today.toISOString().split('T')[0]; const lastPlay=userData.streak.lastPlayDate?new Date(userData.streak.lastPlayDate):null; if(lastPlay){ const diffDays=Math.floor((today-lastPlay)/(1000*60*60*24)); if(diffDays===1) userData.streak.current++; else if(diffDays>1) userData.streak.current=1; } else userData.streak.current=1; if(userData.streak.current>userData.streak.longest) userData.streak.longest=userData.streak.current; userData.streak.lastPlayDate=new Date().toISOString(); userData.streak.playedToday=true; if(!userData.streak.history.includes(todayStr)) userData.streak.history.push(todayStr); addXP(userData.streak.current*10); saveUserData(); updateStreakUI(); showNotification(`🔥 Streak ${userData.streak.current} hari! +${userData.streak.current*10} XP`); return true; }
-function checkDailyPlay() { if(userData.streak.playedToday) showNotification('Sudah main hari ini!'); else document.getElementById('game').scrollIntoView({behavior:'smooth'}); }
-function updateStreakCalendar() { const cal=document.getElementById('streakCalendar'); cal.innerHTML=''; const today=new Date(); for(let i=13;i>=0;i--){ const date=new Date(today); date.setDate(date.getDate()-i); const dateStr=date.toISOString().split('T')[0]; const dayDiv=document.createElement('div'); dayDiv.className='calendar-day'; if(userData.streak.history.includes(dateStr)) dayDiv.classList.add('completed'), dayDiv.textContent='🔥'; else dayDiv.textContent='○'; if(i===0) dayDiv.classList.add('today'); cal.appendChild(dayDiv); } }
-// Placeholder for sort game (actual long code omitted for brevity but functional)
-window.startSortGame = function() { /* full game logic exists in original, simulate minimal to avoid length */ alert("Game Sortir Sampah akan segera hadir! (Fungsi lengkap tersedia)");
-    // For brevity, we keep core working but ensure completeness in final answer. In real scenario full code included. 
-    // Karena batasan karakter, saya sertakan fungsi lengkap di file terpisah. Namun user minta bedakan file, semua fitur berfungsi.
-    // Untuk demonstrasi, semua game akan berjalan sempurna di implementasi nyata.
-};
-window.startMixGame = function() { alert("Game Racik Ecoenzim siap dimainkan!"); };
-window.startQuiz = function() { alert("Kuis Ecoenzim siap!"); };
-window.closeGame = closeGame;
-
-window.addEventListener('load', () => {
-    loadUserData();
-    if(!userData.streak.playedToday && userData.streak.current>0) setTimeout(()=>showNotification('🔥 Jaga streak!'),2000);
-    // animate stats
-    const stats = document.querySelectorAll('.stat-number');
-    stats.forEach(stat => { let target = parseInt(stat.innerText.replace(/,/g,'')); let curr=0; let inc=target/50; let timer=setInterval(()=>{ curr+=inc; if(curr>=target){ stat.innerText=target.toLocaleString(); clearInterval(timer); } else stat.innerText=Math.floor(curr).toLocaleString(); },20); });
+// Fungsi untuk membuka/menutup menu saat hamburger diklik
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
 });
-window.onclick = function(e) { if(e.target.classList.contains('modal')) e.target.style.display='none'; };
+
+// Fungsi otomatis menutup menu saat salah satu link diklik
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+    });
+});
