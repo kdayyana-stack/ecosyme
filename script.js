@@ -24,7 +24,7 @@ function updateUI() {
     document.getElementById('quizScore').textContent = userData.gameScores.quiz;
     updateModuleProgress();
     updateBadges();
-    updateStreakUI();
+    updateStreakUI();  // ini akan memanggil checkAndResetStreak
 }
 
 function updateModuleProgress() {
@@ -34,17 +34,14 @@ function updateModuleProgress() {
             card.querySelector('.progress-fill').style.width = '100%';
             card.querySelector('.progress-text').textContent = '100% selesai';
             card.querySelector('.module-badge').classList.remove('locked');
-            // Buka modul berikutnya
             let nextCard = document.querySelector(`[data-module="${mod+1}"]`);
             if(nextCard) {
                 let nextBtn = nextCard.querySelector('.btn-module');
                 nextBtn.disabled = false;
                 nextBtn.classList.remove('locked');
                 nextBtn.innerHTML = 'Mulai Belajar';
-                // Perbaikan: pasang onclick dengan benar
                 nextBtn.setAttribute('onclick', `openModule(${mod+1})`);
                 nextCard.querySelector('.progress-text').textContent = '0% selesai';
-                // Hapus badge locked
                 nextCard.querySelector('.module-badge').classList.remove('locked');
             }
         }
@@ -254,71 +251,145 @@ function endQuiz() {
     saveUserData(); updateUI();
 }
 
-// ===================== STREAK SYSTEM =====================
-function updateStreakUI() {
-    checkStreak();
-    document.getElementById('streakNumber').textContent=userData.streak.current;
-    document.getElementById('longestStreak').textContent=userData.streak.longest;
-    let statusDiv=document.getElementById('streakStatus'), btn=document.getElementById('playTodayBtn');
-    if(userData.streak.playedToday) { statusDiv.innerHTML='<p>✅ Sudah bermain hari ini!</p>'; btn.disabled=true; btn.textContent='✓ Streak Hari Ini Selesai'; }
-    else { statusDiv.innerHTML='<p>⚡ Main sekarang untuk lanjutkan streak!</p>'; btn.disabled=false; btn.textContent='🔥 Main Game Hari Ini!'; }
-    updateStreakCalendar();
+// ===================== STREAK SYSTEM (DIPERBAIKI) =====================
+
+function getTodayDateStr() {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
 }
-function checkStreak() {
-    let today=new Date(); today.setHours(0,0,0,0);
-    let lastPlay=userData.streak.lastPlayDate ? new Date(userData.streak.lastPlayDate) : null;
-    if(lastPlay){
-        lastPlay.setHours(0,0,0,0);
-        let diffDays=Math.floor((today-lastPlay)/(1000*60*60*24));
-        let lastPlayStr=new Date(userData.streak.lastPlayDate).toISOString().split('T')[0];
-        userData.streak.playedToday = (lastPlayStr === today.toISOString().split('T')[0]);
-        if(diffDays>1 && !userData.streak.playedToday) userData.streak.current=0;
+
+function checkAndResetStreak() {
+    const todayStr = getTodayDateStr();
+    const lastPlayStr = userData.streak.lastPlayDate ? new Date(userData.streak.lastPlayDate).toISOString().split('T')[0] : null;
+    
+    userData.streak.playedToday = (lastPlayStr === todayStr);
+    
+    if (!userData.streak.playedToday && lastPlayStr) {
+        const lastDate = new Date(lastPlayStr);
+        const todayDate = new Date(todayStr);
+        const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+        if (diffDays > 1) {
+            userData.streak.current = 0;
+        }
+    }
+    
+    if (userData.streak.current > userData.streak.longest) {
+        userData.streak.longest = userData.streak.current;
     }
 }
+
 function recordDailyPlay() {
-    if(userData.streak.playedToday) return false;
-    let today=new Date(); let todayStr=today.toISOString().split('T')[0];
-    let lastPlay=userData.streak.lastPlayDate ? new Date(userData.streak.lastPlayDate) : null;
-    if(lastPlay){
-        let diffDays=Math.floor((today-lastPlay)/(1000*60*60*24));
-        if(diffDays===1) userData.streak.current++;
-        else if(diffDays>1) userData.streak.current=1;
-    } else userData.streak.current=1;
-    if(userData.streak.current > userData.streak.longest) userData.streak.longest = userData.streak.current;
+    if (userData.streak.playedToday) return false;
+    
+    const todayStr = getTodayDateStr();
+    const lastPlayStr = userData.streak.lastPlayDate ? new Date(userData.streak.lastPlayDate).toISOString().split('T')[0] : null;
+    
+    let diffDays = 0;
+    if (lastPlayStr) {
+        const lastDate = new Date(lastPlayStr);
+        const todayDate = new Date(todayStr);
+        diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+    }
+    
+    if (diffDays === 1) {
+        userData.streak.current += 1;
+    } else if (diffDays > 1 || !lastPlayStr) {
+        userData.streak.current = 1;
+    } else if (diffDays === 0) {
+        return false;
+    }
+    
     userData.streak.lastPlayDate = new Date().toISOString();
     userData.streak.playedToday = true;
-    if(!userData.streak.history.includes(todayStr)) userData.streak.history.push(todayStr);
-    let bonusXP = userData.streak.current * 10;
-    addXP(bonusXP);
+    if (!userData.streak.history) userData.streak.history = [];
+    if (!userData.streak.history.includes(todayStr)) {
+        userData.streak.history.push(todayStr);
+    }
+    
+    if (userData.streak.current > userData.streak.longest) {
+        userData.streak.longest = userData.streak.current;
+    }
+    
     saveUserData();
-    updateStreakUI();
+    updateUI();
+    
+    const bonusXP = userData.streak.current * 10;
+    addXP(bonusXP);
     showNotification(`🔥 Streak ${userData.streak.current} hari! +${bonusXP} XP Bonus!`);
+    
     return true;
 }
-function checkDailyPlay() {
-    if(userData.streak.playedToday) showNotification('✅ Kamu sudah bermain hari ini!');
-    else document.getElementById('game').scrollIntoView({behavior:'smooth'});
+
+function updateStreakUI() {
+    checkAndResetStreak();
+    
+    const streakNumberElem = document.getElementById('streakNumber');
+    if (streakNumberElem) streakNumberElem.textContent = userData.streak.current;
+    
+    const longestElem = document.getElementById('longestStreak');
+    if (longestElem) longestElem.textContent = userData.streak.longest;
+    
+    const statusDiv = document.getElementById('streakStatus');
+    const playBtn = document.getElementById('playTodayBtn');
+    
+    if (userData.streak.playedToday) {
+        if (statusDiv) statusDiv.innerHTML = '<p>✅ Sudah bermain hari ini!</p>';
+        if (playBtn) {
+            playBtn.disabled = true;
+            playBtn.textContent = '✓ Streak Hari Ini Selesai';
+        }
+    } else {
+        if (statusDiv) statusDiv.innerHTML = '<p>⚡ Main sekarang untuk lanjutkan streak!</p>';
+        if (playBtn) {
+            playBtn.disabled = false;
+            playBtn.textContent = '🔥 Main Game Hari Ini!';
+        }
+    }
+    
+    updateStreakCalendar();
 }
+
 function updateStreakCalendar() {
-    let cal=document.getElementById('streakCalendar'); cal.innerHTML='';
-    let today=new Date();
-    for(let i=13;i>=0;i--){
-        let date=new Date(today); date.setDate(date.getDate()-i);
-        let dateStr=date.toISOString().split('T')[0];
-        let dayDiv=document.createElement('div'); dayDiv.className='calendar-day';
-        if(userData.streak.history.includes(dateStr)) { dayDiv.classList.add('completed'); dayDiv.textContent='🔥'; }
-        else dayDiv.textContent='○';
-        if(i===0) dayDiv.classList.add('today');
+    const cal = document.getElementById('streakCalendar');
+    if (!cal) return;
+    cal.innerHTML = '';
+    const today = new Date();
+    const historySet = new Set(userData.streak.history || []);
+    
+    for (let i = 13; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const dateStr = date.toISOString().split('T')[0];
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'calendar-day';
+        if (historySet.has(dateStr)) {
+            dayDiv.classList.add('completed');
+            dayDiv.textContent = '🔥';
+        } else {
+            dayDiv.textContent = '○';
+        }
+        if (i === 0) dayDiv.classList.add('today');
         cal.appendChild(dayDiv);
     }
 }
-function changeAvatar() {
-    const avatars=["🌱","🌿","🍀","🌾","🌳","🌲","🌴","🌵","🌸","🌺","🌻","🌼"];
-    let idx = avatars.indexOf(userData.avatar)+1;
-    if(idx>=avatars.length) idx=0;
-    userData.avatar = avatars[idx];
-    saveUserData(); updateUI();
+
+function checkDailyPlay() {
+    if (userData.streak.playedToday) {
+        showNotification('✅ Kamu sudah bermain hari ini!');
+    } else {
+        document.getElementById('game').scrollIntoView({ behavior: 'smooth' });
+    }
 }
+
+function changeAvatar() {
+    const avatars = ["🌱","🌿","🍀","🌾","🌳","🌲","🌴","🌵","🌸","🌺","🌻","🌼"];
+    let idx = avatars.indexOf(userData.avatar) + 1;
+    if (idx >= avatars.length) idx = 0;
+    userData.avatar = avatars[idx];
+    saveUserData();
+    updateUI();
+}
+
 function closeGame() { document.getElementById('gameModal').style.display='none'; updateUI(); }
 function showNotification(msg) {
     let div=document.createElement('div');
@@ -326,6 +397,7 @@ function showNotification(msg) {
     div.innerText=msg; document.body.appendChild(div);
     setTimeout(()=>div.remove(),3000);
 }
+
 window.addEventListener('load',()=>{
     loadUserData();
     if(!userData.streak.playedToday && userData.streak.current>0) setTimeout(()=>showNotification('🔥 Jangan lupa main game hari ini untuk jaga streak!'),2000);
@@ -334,7 +406,6 @@ window.addEventListener('load',()=>{
         let curr=0, inc=target/50;
         let timer=setInterval(()=>{ curr+=inc; if(curr>=target){ stat.innerText=target.toLocaleString(); clearInterval(timer); } else stat.innerText=Math.floor(curr).toLocaleString(); },20);
     });
-    // Hamburger
     let hamburger=document.getElementById('hamburger'), navMenu=document.getElementById('navMenu');
     if(hamburger){
         hamburger.addEventListener('click',()=>{ navMenu.classList.toggle('active'); hamburger.classList.toggle('active'); });
