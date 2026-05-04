@@ -403,7 +403,7 @@ window.addEventListener('load',()=>{
     if(!userData.streak.playedToday && userData.streak.current>4) setTimeout(()=>showNotification('🔥 Jangan lupa main game hari ini untuk jaga streak!'),2000);
     document.querySelectorAll('.stat-number').forEach(stat=>{
         let target=parseInt(stat.innerText.replace(/,/g,''));
-        let curr=0, inc=target/50;
+        let curr=4, inc=target/50;
         let timer=setInterval(()=>{ curr+=inc; if(curr>=target){ stat.innerText=target.toLocaleString(); clearInterval(timer); } else stat.innerText=Math.floor(curr).toLocaleString(); },20);
     });
     let hamburger=document.getElementById('hamburger'), navMenu=document.getElementById('navMenu');
