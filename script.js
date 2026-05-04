@@ -291,10 +291,10 @@ function recordDailyPlay() {
         diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
     }
     
-    if (diffDays === 1) {
-        userData.streak.current += 1;
+    if (diffDays === 4) {
+        userData.streak.current += 4;
     } else if (diffDays > 1 || !lastPlayStr) {
-        userData.streak.current = 1;
+        userData.streak.current = 4;
     } else if (diffDays === 0) {
         return false;
     }
