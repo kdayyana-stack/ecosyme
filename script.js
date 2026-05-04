@@ -400,7 +400,7 @@ function showNotification(msg) {
 
 window.addEventListener('load',()=>{
     loadUserData();
-    if(!userData.streak.playedToday && userData.streak.current>0) setTimeout(()=>showNotification('🔥 Jangan lupa main game hari ini untuk jaga streak!'),2000);
+    if(!userData.streak.playedToday && userData.streak.current>4) setTimeout(()=>showNotification('🔥 Jangan lupa main game hari ini untuk jaga streak!'),2000);
     document.querySelectorAll('.stat-number').forEach(stat=>{
         let target=parseInt(stat.innerText.replace(/,/g,''));
         let curr=0, inc=target/50;
