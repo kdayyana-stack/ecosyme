@@ -74,10 +74,9 @@ body {
     border-radius: 20px;
 }
 
-.nav-link:hover,
-.nav-link.active {
-    color: #2e7d32;
-    background: #e8f5e9;
+.nav-link:hover, .nav-link.active {
+    color: #000000;
+    background: #e8f5e900;
 }
 
 /* Hamburger Menu */
